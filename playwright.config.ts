@@ -11,7 +11,7 @@ require('dotenv').config();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  // testDir: './tests',
+  testDir: './tests',
 
   /* Run tests in files in parallel */
   fullyParallel: true,
