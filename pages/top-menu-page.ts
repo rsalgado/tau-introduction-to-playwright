@@ -9,6 +9,8 @@ export class TopMenuPage {
     readonly javaLabel: Locator;
     readonly nodeDescription: string = 'Installing Playwright';
     readonly javaDescription: string = `Playwright is distributed as a set of Maven modules. The easiest way to use it is to add one dependency to your project's pom.xml as described below. If you're not familiar with Maven please refer to its documentation.`;
+    readonly searchButton: Locator;
+    readonly searchInput: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -17,6 +19,8 @@ export class TopMenuPage {
         this.javaLink = page.getByRole('navigation', { name: 'Main' }).getByText('Java');
         this.nodeLabel = page.getByText(this.nodeDescription, {exact:true});
         this.javaLabel = page.getByText(this.javaDescription);
+        this.searchButton = page.locator("css=button.DocSearch");
+        this.searchInput = page.getByPlaceholder("Search docs");
     }
 
     async hoverNode() {
@@ -25,6 +29,20 @@ export class TopMenuPage {
     
     async clickJava() {
         await this.javaLink.click();
+    }
+
+    async openSearch() {
+        await this.searchButton.click();
+    }
+
+    async searchTerm(searchTerm: string) {
+        await this.searchInput.fill(searchTerm);
+    }
+
+    async selectSearchResult(resultTitle: string) {
+        let option = this.page.getByRole("option", { name: resultTitle });
+        await option.scrollIntoViewIfNeeded();
+        await option.click();
     }
 
     async assertPageUrl(pageUrl: RegExp) {

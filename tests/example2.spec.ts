@@ -1,4 +1,4 @@
-import { test, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { HomePage } from '../pages/home-page';
 import { TopMenuPage } from '../pages/top-menu-page';
 
@@ -42,5 +42,15 @@ test.describe('Playwright website', () => {
             await topMenuPage.assertNodeDescriptionNotVisible();
             await topMenuPage.assertJavaDescriptionVisible();
         });
+    });
+
+    test('search documentation for "Other Locators"', async ({page}) => {
+        let expectedURL : string = "https://playwright.dev/docs/other-locators";
+        topMenuPage = new TopMenuPage(page);
+        await topMenuPage.openSearch();
+        await topMenuPage.searchTerm("Locators");
+        await topMenuPage.selectSearchResult("Other Locators");
+
+        await expect(page).toHaveURL(expectedURL);
     });
 });
